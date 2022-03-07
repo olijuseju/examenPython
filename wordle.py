@@ -86,31 +86,22 @@ def choose_secret_advanced(filename):
     listaPalabras = []
     
     for linea in f:
-      listaPalabras.append(f.readline())
+      fi = f.readline()
+      listaPalabras.append(fi[0:5])
     f.close()
     
     selected =[]
     for palabra in listaPalabras:
       if len(palabra) == 5:
-        res = palabra.find("á")
-        if res==-1:
-          res = palabra.find("é")
-          if res==-1:
-            res = palabra.find("í")
-            if res==-1:
-              res = palabra.find("ó")
-              if res==-1:
-                res = palabra.find("ú")
-                if res==-1:
-                    repetida=False
-                    for seleccionada in selected:
-                      if palabra == selected:
-                        repetida = True
+        repetida=False
+        for seleccionada in selected:
+            if palabra == seleccionada:
+              repetida = True
                     
-                    if(repetida == False):
-                      selected.append(palabra)
+        if(repetida == False):
+          selected.append(palabra)
 
-    num = random.randint(0, len(selected) - 1)
+    num = random.randint(0, len(selected))
 
     return selected,selected[num]
 
@@ -131,14 +122,17 @@ def check_valid_word(selected):
         if(word==palabra):
           estaDentro=True
 
+    return word
+
+
 
 
 
 if __name__ == "__main__":
-    secret=choose_secret_advanced("palabras_extended.txt")
+    selected,secret=choose_secret_advanced("palabras_extended.txt")
     print("Palabra a adivinar: "+secret)#Debug: esto es para que sepas la palabra que debes adivinar
     for repeticiones in range(0,6):
-        word = input("Introduce una nueva palabra: ")
+        word = check_valid_word(selected)
         same_position, same_letter = compare_words(word,secret)
         resultado=print_word(word,same_position,same_letter)
         print(resultado)
