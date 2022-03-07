@@ -1,3 +1,4 @@
+import random
 def choose_secret():
     """Dado un nombre de fichero, esta funciÃ³n devuelve una palabra aleatoria de este fichero transformada a mayÃºsculas.
     Args:
@@ -14,13 +15,15 @@ def choose_secret():
       listaPalabras.append(f.readline())
     f.close()
 
-    
+    num = random.randint(0, len(listaPalabras) - 1)
+
+    return listaPalabras[num]
     
     
 
 
     
-def compare_words():
+def compare_words(word, secret):
     """Dadas dos palabras en mayÃºsculas (word y secret), esta funciÃ³n calcula las posiciones de las letras de word que aparecen en la misma posiciÃ³n en secret, y las posiciones de las letras de word que aparecen en secret pero en una posiciÃ³n distinta.
     Args:
       word: Una palabra. Ej. "CAMPO"
@@ -29,8 +32,22 @@ def compare_words():
       same_position: Lista de posiciones de word cuyas letras coinciden en la misma posiciÃ³n en secret. En el caso anterior: [0]
       same_letter: Lista de posiciones de word cuyas letras estÃ¡n en secret pero en posiciones distintas. En el caso anterior: [1,2]
     """
+    word = word.upper()
+    secret = secret.upper()
+    same_position=[]
+    same_letter=[]
+    for plword in range(len(word)):
+      for plsecret in range(len(secret)):
+        if(word[plword] == secret[plsecret]):
+          if(plword==plsecret):
+            same_position.append(plword)
+          else:
+            same_letter.append(plword)
+    return same_position, same_letter
+          
 
-def print_word():
+
+def print_word(word, same_letter_position, same_letter):
     """Dada una palabra, una lista same_position y otra lista same_letter, esta funciÃ³n crearÃ¡ un string donde aparezcan en mayÃºsculas las letras de la palabra que ocupen las posiciones de same_position, en minÃºsculas las letras de la palabra que ocupen las posiciones de same_letter y un guiÃ³n (-) en el resto de posiciones
     Args:
       word: Una palabra. Ej. "CAMPO"
@@ -39,6 +56,14 @@ def print_word():
     Returns:
       transformed: La palabra aplicando las transformaciones. En el caso anterior: "Cam--"
     """
+    transformed = "-----"
+    for i in same_letter_position:
+      transformed[same_letter_position] = word[same_letter_position]
+    for i in same_letter:
+      minus = word[same_letter].lower()
+      transformed[same_letter] = minus
+
+    return transformed
     
 def choose_secret_advanced():
     """Dado un nombre de fichero, esta funciÃ³n filtra solo las palabras de 5 letras que no tienen acentos (Ã¡,Ã©,Ã­,Ã³,Ãº). De estas palabras, la funciÃ³n devuelve una lista de 15 aleatorias no repetidas y una de estas 15, se selecciona aleatoriamente como palabra secret.
