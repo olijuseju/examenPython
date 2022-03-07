@@ -43,6 +43,7 @@ def compare_words(word, secret):
             same_position.append(plword)
           else:
             same_letter.append(plword)
+
     return same_position, same_letter
           
 
@@ -56,12 +57,18 @@ def print_word(word, same_letter_position, same_letter):
     Returns:
       transformed: La palabra aplicando las transformaciones. En el caso anterior: "Cam--"
     """
-    transformed = "-----"
+    word = word.upper()
+    deng = ["-","-","-","-","-"]
     for i in same_letter_position:
-      transformed[same_letter_position] = word[same_letter_position]
+      deng[i] = word[i]
     for i in same_letter:
-      minus = word[same_letter].lower()
-      transformed[same_letter] = minus
+      minus = word[i].lower()
+      deng[i] = minus
+    
+    transformed = ""
+
+    for i in deng:
+      transformed += i
 
     return transformed
     
@@ -87,8 +94,8 @@ if __name__ == "__main__":
     print("Palabra a adivinar: "+secret)#Debug: esto es para que sepas la palabra que debes adivinar
     for repeticiones in range(0,6):
         word = input("Introduce una nueva palabra: ")
-        same_position, same_letter = compare_words()
-        resultado=print_word()
+        same_position, same_letter = compare_words(word,secret)
+        resultado=print_word(word,same_position,same_letter)
         print(resultado)
         if word == secret:
             print("HAS GANADO!!")
